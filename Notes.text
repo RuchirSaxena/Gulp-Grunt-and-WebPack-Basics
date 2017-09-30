@@ -1,0 +1,96 @@
+Introduction
+==============
+1.Open source javascript toolkit and task runner
+2.Front-end build system
+3.Built on Node.js and NPM
+4.Used for automating time consuming and repetitive tasks
+5.Hundreds of plugins available for different tasks  
+
+Common tasks performed with Gulp
+====================================
+Minification of scripts and styles
+Concatenation
+Cache busing
+Testing , linting and optimisation
+Dev Servers
+
+How Gulp Works
+================
+Built on node streams
+Pipelines/.pipe() operator
+Single purpose plugins
+Files not affected until all plugins are processed
+
+Grunt vs Gulp
+==============
+Gulp is code over configuration , Grunt is configuration over code
+Gulp is easier to read than GruntGulp is based on streams ,
+Gulp is based on streams ,Grunt is based on Files
+
+Creating task in Gulp
+========================
+//Basic task
+gulp.task('message',function () {
+    return console.log('Gulp is running...');
+});
+
+Plugin to optimize images
+==========================
+npm install --save-dev gulp-imagemin
+const imagemin = require('gulp-imagemin');
+
+//optimize Images using imageMin Pulgin
+gulp.task('imageMin', () =>
+    gulp.src('src/images/*')
+    .pipe(imagemin())
+    .pipe(gulp.dest('dist/images'))
+);
+
+Plugin to minify js
+==========================
+npm install --save-dev gulp-uglify
+
+//minify js files
+gulp.task('minifyJs',function(){
+    gulp.src('src/js/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/js'));
+});
+
+Plugin to bundle js files
+==========================
+npm install --save-dev gulp-concat
+
+const concat = require('gulp-concat');
+//concating js files and minifying js files
+gulp.task('concatJs', function(){
+    gulp.src('src/js/*.js')
+    .pipe(concat('main.js')) //Bundling js files
+    .pipe(uglify()) //minify js files
+    .pipe(gulp.dest('dist/js'));
+});
+
+How can we run all the created task together
+==============================================
+/running all the task together
+gulp.task('default', [
+    'message',
+    'copyHtml',
+    'imageMin',
+    'minifyJs',
+    'sass',
+    'concatJs'
+]);
+
+
+Watching all task
+====================
+//Warching all the task and if there are any changes in any created task then that task will run automatically
+gulp.task('watch',function () {
+    gulp.watch('src/js/*.js',['scripts']);
+    gulp.watch('src/sass/*.scss',['sass']);
+    gulp.watch('src/images/*',['imageMin']);
+    gulp.watch('src/*.html',['copyHtml']);
+});
+
+   
